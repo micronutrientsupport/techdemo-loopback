@@ -33,6 +33,7 @@
     "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run build",
     "start": "node -r source-map-support/register .",
+    "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
   "repository": {
@@ -58,11 +59,12 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",
-    "source-map-support": "^0.5.19",
+    "@loopback/eslint-config": "^10.0.1",
     "@loopback/testlab": "^3.2.7",
     "@types/node": "^10.17.37",
-    "@loopback/eslint-config": "^10.0.1",
     "eslint": "^7.10.0",
+    "source-map-support": "^0.5.19",
+    "tsc-watch": "^4.2.9",
     "typescript": "~4.0.3"
   }
 }
