@@ -1,11 +1,10 @@
 import {
-  Filter,
 
   repository
 } from '@loopback/repository';
 import {
   get,
-  getModelSchemaRef, param
+  getModelSchemaRef
 } from '@loopback/rest';
 import {Country} from '../models';
 import {CountryRepository} from '../repositories';
@@ -24,7 +23,7 @@ export class CountryController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(Country, {includeRelations: true}),
+              items: getModelSchemaRef(Country, {includeRelations: false}),
             },
           },
         },
@@ -32,9 +31,8 @@ export class CountryController {
     },
   })
   async find(
-    @param.filter(Country) filter?: Filter<Country>,
   ): Promise<Country[]> {
-    return this.countryRepository.find(filter);
+    return this.countryRepository.find();
   }
 
 }
