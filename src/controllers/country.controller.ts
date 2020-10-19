@@ -1,38 +1,36 @@
 import {
-
   repository
 } from '@loopback/repository';
 import {
-  get,
-  getModelSchemaRef
+  get, getModelSchemaRef
 } from '@loopback/rest';
 import {Country} from '../models';
 import {CountryRepository} from '../repositories';
+import {StandardJsonResponse} from './standardJsonResponse';
+import {StandardOpenApiResponses} from './standardOpenApiResponses';
 
 export class CountryController {
   constructor(
     @repository(CountryRepository)
     public countryRepository: CountryRepository,
-  ) {}
+  ) {
+  }
 
   @get('/countries', {
-    responses: {
-      '200': {
-        description: 'Array of Country model instances',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'array',
-              items: getModelSchemaRef(Country, {includeRelations: false}),
-            },
-          },
-        },
-      },
-    },
+    responses:
+      new StandardOpenApiResponses('Array of Country model instances')
+        .setDataType('array')
+        .setObjectSchema(getModelSchemaRef(Country))
+        .toObject(),
   })
-  async find(
-  ): Promise<Country[]> {
-    return this.countryRepository.find();
+  async find(): Promise<StandardJsonResponse<Array<Country>>> {
+    return this.countryRepository.find()
+      .then((countries: Country[]) => {
+        return new StandardJsonResponse<Array<Country>>(
+          `${countries.length} Countries returned.`,
+          countries,
+        );
+      });
   }
 
 }
